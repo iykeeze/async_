@@ -1,73 +1,52 @@
-// Task 01: Iterating with Async/Await
+// Helper function to create a delay
+function delay(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+// Main async function to iterate with async/await
 async function iterateWithAsyncAwait(values) {
   for (const value of values) {
     console.log(value);
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await delay(1000); // Delay for 1 second
   }
 }
 
-const values = ["A", "B", "C", "D", "E"];
+// Example usage
+const values = ["Imo", "Rivers", "Abuja", "Delta", "Ebonyi"];
 iterateWithAsyncAwait(values);
 
-// Task 02: Awaiting a Call
-async function awaitCall() {
-  const response = await fetch("https://api.example.com/data");
-  const data = await response.json();
-  console.log(data);
-}
-
-awaitCall();
-
-// Task 03: Handling Errors with Async/Await
-async function awaitCall() {
+//task 2 & 3
+const AWAITCALL = async () => {
   try {
-    const response = await fetch("https://api.example.com/data");
-    if (!response.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const data = await response.json();
-    console.log(data);
+    const data = await fetch("https://jsonplaceholder.typicode.com/");
+    const dataDisplay = await data.json();
+    console.log(dataDisplay);
   } catch (error) {
-    console.error("Failed to fetch data:", error.message);
+    console.log("profile not found in database");
+  }
+};
+console.log(AWAITCALL());
+
+//task 4
+async function concurrentRequests() {
+  const url1 = "https://api.example.com/endpoint1";
+  const url2 = "https://api.example.com/endpoint2";
+
+  try {
+    // Create promises for both API calls
+    const request1 = fetch(url1).then((response) => response.json());
+    const request2 = fetch(url2).then((response) => response.json());
+
+    // Wait for both promises to resolve using Promise.all
+    const [result1, result2] = await Promise.all([request1, request2]);
+
+    // Log the combined results
+    console.log("Combined Results:", { result1, result2 });
+  } catch (error) {
+    // Handle any errors that might have occurred during the requests
+    console.error("Error making API calls:", error);
   }
 }
 
-awaitCall();
-
-//Task 04: Chaining Async/Await
-async function function1() {
-  console.log("Function 1 executed");
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-}
-
-async function function2() {
-  console.log("Function 2 executed");
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-}
-
-async function function3() {
-  console.log("Function 3 executed");
-  await new Promise((resolve) => setTimeout(resolve, 1000));
-}
-
-async function chainedAsyncFunctions() {
-  await function1();
-  await function2();
-  await function3();
-}
-
-chainedAsyncFunctions();
-
-// Task 05: Awaiting Concurrent Requests
-async function concurrentRequests() {
-  const [response1, response2] = await Promise.all([
-    fetch("https://api.example.com/data1"),
-    fetch("https://api.example.com/data2"),
-  ]);
-  const data1 = await response1.json();
-  const data2 = await response2.json();
-  console.log("Data 1:", data1);
-  console.log("Data 2:", data2);
-}
-
+// Call the function to test it
 concurrentRequests();
